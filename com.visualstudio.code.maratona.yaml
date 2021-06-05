@@ -20,6 +20,7 @@ modules:
     sources:
       - type: file
         path: visualstudio-maratona.sh
+
   - name: ms-vscode.cpptools
     buildsystem: simple
     build-commands:
@@ -33,6 +34,73 @@ modules:
           type: json
           url: https://api.github.com/repos/microsoft/vscode-cpptools/releases/latest
           url-query: .assets[] | select(.name == "cpptools-linux.vsix") | .browser_download_url
+
+  - name: redhat.java
+    buildsystem: simple
+    build-commands:
+      - maratona-code --install-extension 'redhat-java.vsix' --user-data-dir '/app/tools/maratona/tmp'
+    sources:
+      - type: file
+        url: https://download.jboss.org/jbosstools/static/jdt.ls/stable/java-0.79.2-218.vsix
+        sha512: 81902e2f00404328f2042e78c3aa89050352242988994035c4b5f00309d85b079e86a34fe46dd65bae6dd03bf8eeb4b40b380688f2aa03d6302389e76b739182
+        dest-filename: redhat-java.vsix
+
+  - name: vscjava.vscode-java-debug
+    buildsystem: simple
+    build-commands:
+      - maratona-code --install-extension 'vscjava.vscode-java-debug.vsix' --user-data-dir '/app/tools/maratona/tmp'
+    sources:
+      - type: file
+        url: https://github.com/microsoft/vscode-java-debug/releases/download/0.34.0/vscjava.vscode-java-debug-0.34.0.vsix
+        sha512: fb26c1867bca3b687cf765a4e3f8b6d20077c57a34b70e8735ed855a37620b5ba7137961b1d27d08d4ac6c6639f44f58f9d9eeb75450f4796ea528963ee53cba
+        dest-filename: vscjava.vscode-java-debug.vsix
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/microsoft/vscode-java-debug/releases/latest
+          url-query: .assets[] | select(.name | test("vscjava.vscode-java-debug.+vsix"; "g")) | .browser_download_url
+
+  - name: vscjava.vscode-java-dependency
+    buildsystem: simple
+    build-commands:
+      - maratona-code --install-extension 'vscjava.vscode-java-dependency.vsix' --user-data-dir '/app/tools/maratona/tmp'
+    sources:
+      - type: file
+        url: https://github.com/microsoft/vscode-java-dependency/releases/download/0.18.4/vscjava.vscode-java-dependency-0.18.4.vsix
+        sha512: 6ce70a7f2757d772c88f6e766015c3c4373b02d1eff28ae4e49e3c1bc971679000bb55e0ecc3ff7c235d4e25d99e2578e8215c3ee5e2a1720095fe81b67ad05a
+        dest-filename: vscjava.vscode-java-dependency.vsix
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/microsoft/vscode-java-dependency/releases/latest
+          url-query: .assets[] | select(.name | test("vscjava.vscode-java-dependency.+vsix"; "g")) | .browser_download_url
+
+  - name: formulahendry.code-runner
+    buildsystem: simple
+    build-commands:
+      - maratona-code --install-extension 'formulahendry.code-runner.vsix' --user-data-dir '/app/tools/maratona/tmp'
+    sources:
+      - type: file
+        url: https://github.com/formulahendry/vscode-code-runner/releases/download/0.9.17/code-runner-0.9.17.vsix
+        sha512: 16ba5f60a4d4e6401a09202586b5a465b0e58c9b471c2a18e9e9a1e39312df4d884d01caddc4c27ac90a8d01f6a1f8ee84b67918c5c64ae0ad6bd9721485ec89
+        dest-filename: formulahendry.code-runner.vsix
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/formulahendry/vscode-code-runner/releases/latest
+          url-query: .assets[] | select(.name | test("code-runner.+vsix"; "g")) | .browser_download_url
+
+  - name: ms-python.python
+    buildsystem: simple
+    build-commands:
+      - maratona-code --install-extension 'ms-python.python.vsix' --user-data-dir '/app/tools/maratona/tmp'
+    sources:
+      - type: file
+        url: https://github.com/microsoft/vscode-python/releases/download/2021.5.842923320/ms-python-release.vsix
+        sha512: 8a44bf2caa99094509dd43cb37df36f4477f328784b9e156d7100fe27c7cc2be709c8823da2b02bfca1d1ff9a472efdcbde6c1cd77e8b053da65bd6e045c8acf
+        dest-filename: ms-python.python.vsix
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/microsoft/vscode-python/releases/latest
+          url-query: .assets[] | select(.name == "ms-python-release.vsix") | .browser_download_url
+
   - name: finish
     buildsystem: simple
     build-commands:
