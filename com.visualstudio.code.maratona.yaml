@@ -1,0 +1,43 @@
+id: com.visualstudio.code.tool.maratona
+runtime: com.visualstudio.code
+runtime-version: stable
+sdk: org.freedesktop.Sdk//20.08
+branch: '20.08'
+build-extension: true
+appstream-compose: false
+separate-locales: false
+build-options:
+  env:
+    PATH: '/app/tools/maratona/bin:/app/bin:/usr/bin'
+
+modules:
+  - name: setup
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/tools/maratona/vscode-extensions
+      - install -Dm744 visualstudio-maratona.sh /app/tools/maratona/bin/maratona-code
+      - mkdir -p /app/tools/maratona/tmp
+    sources:
+      - type: file
+        path: visualstudio-maratona.sh
+  - name: ms-vscode.cpptools
+    buildsystem: simple
+    build-commands:
+      - maratona-code --install-extension 'cpptools-linux.vsix' --user-data-dir '/app/tools/maratona/tmp'
+    sources:
+      - type: file
+        url: https://github.com/microsoft/vscode-cpptools/releases/download/1.4.0/cpptools-linux.vsix
+        sha512: 93a5b2fc3a6d1def0aa068b242c3571b18652e55398a38ceaeb829957d27b1a690a58a6c949763761384268fb1f2a08740cdb284def1d7b2e272c47fa98b2f76
+        dest-filename: cpptools-linux.vsix
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/microsoft/vscode-cpptools/releases/latest
+          url-query: .assets[] | select(.name == "cpptools-linux.vsix") | .browser_download_url
+  - name: finish
+    buildsystem: simple
+    build-commands:
+      - rm -rf /app/tools/maratona/tmp
+      - install -Dm644 vscode-extensions-ok /app/tools/maratona/vscode-extensions/vscode-extensions-ok
+    sources:
+      - type: file
+        path: vscode-extensions-ok
